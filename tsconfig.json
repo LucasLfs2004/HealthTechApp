@@ -5,6 +5,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
       ]
     }
   },
@@ -13,5 +16,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "config/reactQuery.js", "config/reactQuery.js"  ]
 }

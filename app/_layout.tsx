@@ -1,5 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import '@/global.css';
+import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -7,6 +13,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/config/reactQuery';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -15,7 +23,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'login',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -42,18 +50,31 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <GluestackUIProvider mode='light'>
+      <RootLayoutNav />
+    </GluestackUIProvider>
+  );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <GluestackUIProvider mode='light'>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name='login' options={{ headerShown: false }} />
+            <Stack.Screen name='product' options={{ headerShown: false }} />
+            <Stack.Screen name='editProduct' options={{ headerShown: false }} />
+            <Stack.Screen name='addProduct' options={{ headerShown: false }} />
+            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+          </Stack>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </GluestackUIProvider>
   );
 }
